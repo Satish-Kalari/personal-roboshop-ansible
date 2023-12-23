@@ -41,7 +41,7 @@
         dest: /etc/systemd/system/catalogue.service
 
     - name: Demon Reload
-      ansible.builtin.systemd_service: 
+      ansible.builtin.systemd: 
         demon_reload: true
 
     - name: Copying MongoDB

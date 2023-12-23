@@ -9,7 +9,7 @@
       ansible.builtin.service:
         name: redis
         enabled: yes
-        state: present
+        state: started
 
     - name: Aloowing Remote Acess
       ansible.builtin.replace:

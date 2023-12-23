@@ -27,7 +27,7 @@
         dest: /usr/share/nginx/html
         remote_src: yes #if file is alredy in remote source
 
-   - name: Restarting Nginx
+    - name: Restarting Nginx
       ansible.builtin.service:
         name: nginx
         state: restarted

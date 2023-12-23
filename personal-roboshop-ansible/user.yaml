@@ -36,13 +36,13 @@
         chdir: /app
 
     - name: Copying User Service
-      ansible.bulitin.service:
+      ansible.bulitin.copy:
         src: user.service
         dest: /etc/systemd/system/user.service
 
-    - name: Demon Reload
+    - name: Damon Reload
       ansible.builtin.systemd_service: 
-        demon_reload: true
+        daemon_reload: true
 
     - name: Copying MongoDB
       ansible.builtin.copy:

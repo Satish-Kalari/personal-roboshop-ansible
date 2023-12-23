@@ -21,7 +21,7 @@
         url: https://roboshop-builds.s3.amazonaws.com/user.zip
         dest: /tmp/web.zip
 
-   - name: Extracting Web Application
+    - name: Extracting Web Application
       ansible.builtin.unarchive: 
         src: /tmp/web.zip
         dest: /usr/share/nginx/html

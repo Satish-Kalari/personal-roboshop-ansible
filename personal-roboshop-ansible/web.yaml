@@ -1,0 +1,34 @@
+- name: Settingup WEB Server
+  hosts: web
+  become: yes
+  tasks:
+    - name: Installing Nginx
+      ansible.builtin.package:
+        name: nginx 
+        state: present
+
+    - name: start and enable nginx application
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Removing Default nginx html 
+      ansible.builtin.command: rm -rf /usr/share/nginx/html/*
+
+    - name: Donload Web Application
+      ansible.builtin.get_url:
+        url: https://roboshop-builds.s3.amazonaws.com/user.zip
+        dest: /tmp/web.zip
+
+   - name: Extracting Web Application
+      ansible.builtin.unarchive: 
+        src: /tmp/web.zip
+        dest: /usr/share/nginx/html
+        remote_src: yes #if file is alredy in remote source
+
+   - name: Restarting Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+    

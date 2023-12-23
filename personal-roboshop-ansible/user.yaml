@@ -1,0 +1,65 @@
+- name: Settingup User Server
+  hosts: user
+  become: yes
+  tasks:
+    - name: Disableing Old Nodejs % Enabeling Nodejs18
+      ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
+
+    - name: Instaling Nodejs
+      ansible.builtin.package:
+        name: nodejs
+        state: present 
+
+    - name: Adding User roboshop
+      ansible.builtin.user:
+        name: roboshop
+    
+    - name: Ceeating Directory called App
+      ansible.builtin.file:
+        path: /app
+        state: directory
+
+    - name: Donload User Application
+      ansible.builtin.get_url:
+        url: https://roboshop-builds.s3.amazonaws.com/user.zip
+        dest: /tmp
+
+    - name: Extracting User Application
+      ansible.builtin.unarchive: 
+        src: /tmp/user.zip
+        dest: /app
+        remote_src: yes #if file is alredy in remote source
+
+    - name: Installing nmp Dependecies
+      ansible.builtin.command: npm install
+      args: #args can be used to change directory
+        chdir: /app
+
+    - name: Copying User Service
+      ansible.bulitin.service:
+        src: user.service
+        dest: /etc/systemd/system/user.service
+
+    - name: Demon Reload
+      ansible.builtin.systemd_service: 
+        demon_reload: true
+
+    - name: Copying MongoDB
+      ansible.builtin.copy:
+        src: mongodb.repo
+        dest: /etc/yum.repos.d/mongodb.repo 
+   
+    - name: Installing MongoDB Client
+      ansible.builtin.package:
+        name: mongodb-org-shell
+        state: present 
+
+    - name: load user data
+      ansible.builtin.command: mongo --host mongodb.projoy.store < /app/schema//user.js
+      
+    - name: start and enable user
+      ansible.builtin.service:
+        name: user
+        state: restarted
+        enabled: yes
+    

@@ -24,9 +24,9 @@
 #         enabled: yes
 
 - name: Setting up REDIS Server
- hosts: redis
- become: yes
- tasks:
+  hosts: redis
+  become: yes
+  tasks:
    - name: Install REDIS
      ansible.builtin.command: yum install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
 

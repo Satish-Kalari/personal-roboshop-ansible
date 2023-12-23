@@ -7,8 +7,8 @@
 
     - name: Enable Redis 6.2 from package streams
       ansible.builtin.service:
-        name: redis
-        #enabled: yes
+        name: redis-server
+        enabled: yes
         state: started
 
     - name: Aloowing Remote Acess

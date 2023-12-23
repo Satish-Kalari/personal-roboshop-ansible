@@ -36,7 +36,7 @@
         chdir: /app
 
     - name: Copying cart Service
-      ansible.bulitin.service:
+      ansible.builtin.service:
         src: cart.service
         dest: /etc/systemd/system/cart.service
 

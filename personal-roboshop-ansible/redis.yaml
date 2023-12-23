@@ -27,17 +27,17 @@
   hosts: redis
   become: yes
   tasks:
-   - name: Install REDIS
-     ansible.builtin.command: yum install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
+    - name: Install REDIS repository
+      ansible.builtin.command: yum install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y
 
-   - name: Enable Redis
-     ansible.builtin.service:
-       name: redis
-       enabled: yes
-       state: started
+    - name: Enable and start Redis 6.2 from package streams
+      ansible.builtin.service:
+        name: redis
+        enabled: yes
+        state: started
 
-   - name: Allowing Remote Access
-     ansible.builtin.replace:
-       path: /etc/redis.conf
-       regexp: '127.0.0.1'
-       replace: '0.0.0.0'
+    - name: Allow remote access (review security implications)
+      ansible.builtin.replace:
+        path: /etc/redis.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'

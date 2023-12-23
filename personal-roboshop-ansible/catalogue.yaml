@@ -40,9 +40,9 @@
         src: catalogue.service
         dest: /etc/systemd/system/catalogue.service
 
-    - name: Demon Reload
+    - name: Daemon Reload
       ansible.builtin.systemd: 
-        demon_reload: true
+        daemon_reload: true
 
     - name: Copying MongoDB
       ansible.builtin.copy:

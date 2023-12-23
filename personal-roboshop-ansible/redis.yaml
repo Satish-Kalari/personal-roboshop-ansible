@@ -7,7 +7,7 @@
 
     - name: Enable Redis 6.2 from package streams
       ansible.builtin.service:
-        name: redis-server
+        name: 'redis:remi-6.2'
         enabled: yes
         state: started
 

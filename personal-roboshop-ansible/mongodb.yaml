@@ -1,5 +1,5 @@
 - name: Settingup MongoDB Sevrver
-  hosts: mondodb
+  hosts: mongodb
   become: yes 
   tasks:
     - name: Copying MongoDB

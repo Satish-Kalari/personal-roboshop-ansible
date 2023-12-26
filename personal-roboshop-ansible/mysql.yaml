@@ -1,4 +1,4 @@
-- name: myaql server
+- name: mysql server
   hosts: mysql
   become: yes
   tasks:

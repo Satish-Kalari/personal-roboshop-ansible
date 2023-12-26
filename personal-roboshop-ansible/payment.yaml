@@ -24,7 +24,7 @@
     - name: Creating Directory
       ansible.builtin.file:
         name: /app
-        state: present
+        state: directory
 
     - name: Download the Payment application code 
       ansible.builtin.get_url:

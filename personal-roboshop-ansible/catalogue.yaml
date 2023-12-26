@@ -2,6 +2,7 @@
   hosts: catalogue
   become: yes
   tasks:
+
     - name: Disableing Old Nodejs % Enabeling Nodejs18
       ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
 
@@ -14,7 +15,12 @@
       ansible.builtin.user:
         name: roboshop
     
-    - name: Ceeating Directory called App
+    - name: Recursively remove app directory
+      ansible.builtin.file:
+        path: /app
+        state: absent
+
+    - name: Creating Directory called App
       ansible.builtin.file:
         path: /app
         state: directory
@@ -41,7 +47,7 @@
         dest: /etc/systemd/system/catalogue.service
 
     - name: Daemon Reload
-      ansible.builtin.systemd: 
+      ansible.builtin.systemd_service: 
         daemon_reload: true
 
     - name: Copying MongoDB
@@ -64,7 +70,7 @@
 
     - name: load catalogue data
       ansible.builtin.command: mongo --host mongodb.projoy.store < /app/schema/catalogue.js
-      when: product_count.stdout == 0
+      when: product_count.stdout == "0"
 
     - name: start and enable catalogue
       ansible.builtin.service:

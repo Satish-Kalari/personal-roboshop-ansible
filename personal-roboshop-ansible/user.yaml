@@ -2,6 +2,7 @@
   hosts: user
   become: yes
   tasks:
+
     - name: Disableing Old Nodejs % Enabeling Nodejs18
       ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
 
@@ -14,12 +15,17 @@
       ansible.builtin.user:
         name: roboshop
     
-    - name: Ceeating Directory called App
+    - name: Recursively remove app directory
+      ansible.builtin.file:
+        path: /app
+        state: absent
+        
+    - name: Creating Directory called App
       ansible.builtin.file:
         path: /app
         state: directory
 
-    - name: Donload User Application
+    - name: Download User Application
       ansible.builtin.get_url:
         url: https://roboshop-builds.s3.amazonaws.com/user.zip
         dest: /tmp
@@ -54,8 +60,17 @@
         name: mongodb-org-shell
         state: present 
 
+    - name: get the users count
+      ansible.builtin.command:  mongo --host mongodb.projoy.store --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
+        register: user_count
+
+  # - name: print the count
+  #   ansible.builtin.debug:
+  #     msg: "product count: {{user_count}}"
+
     - name: load user data
-      ansible.builtin.command: mongo --host mongodb.projoy.store < /app/schema//user.js
+      ansible.builtin.command: mongo --host mongodb.daws76s.online < /app/schema/user.js
+      when: user_count.stdout == "0" # keep double quotes
       
     - name: start and enable user
       ansible.builtin.service:

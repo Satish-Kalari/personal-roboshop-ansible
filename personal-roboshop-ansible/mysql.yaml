@@ -4,7 +4,7 @@
   tasks:
 
     - name: Disable MySQL
-      ansible.builtin.dnf: dnf module disable mysql -y
+      ansible.builtin.dnf: dnf module disable mysql 
 
     - name: Copy MySQL
       ansible.builtin.copy:
